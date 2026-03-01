@@ -1,0 +1,73 @@
+---
+title: "Testing Imputation Methods on Solar Activity Data"
+author: "Kunal"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## Why Solar Activity Data?
+
+I chose the sunspot dataset because solar activity directly impacts technology we use daily, like GPS accuracy, satellite communications, and power grids. 
+
+This dataset contains monthly sunspot numbers from 1749 to 1983 - over 200 years of observations. In that time, missing data due to cloudy weather or equipment problems was common so this makes it a useful test case for imputation methods.
+
+## loading and Exploring the Data
+```{r setup, message=FALSE}
+library(imputeTestbench)
+
+data("sunspot.month")
+sunspot_data <- as.numeric(sunspot.month)
+
+cat("Dataset: Monthly sunspot numbers (1749-1983)\n")
+cat("Total observations:", length(sunspot_data), "\n")
+cat("Activity range:", round(min(sunspot_data), 1), "to", round(max(sunspot_data), 1), "\n")
+```
+
+let's plot this:
+```{r plot_data, fig.width=12, fig.height=5}
+plot(sunspot.month, 
+     main="Solar Activity: Sunspot Numbers Over 234 Years",
+     ylab="Number of Sunspots",
+     xlab="Year",
+     col="darkorange", lwd=1.5)
+```
+
+The data shows clear ~11-year solar cycles with periods of high and low activity that's why this cyclical pattern makes it interesting for testing imputation methods.
+( the Sun goes through cycles of activity - 
+every 11 years: HIGH activity (lots of sunspots) → LOW activity (few sunspots) → HIGH again )
+
+## Running the benchmark
+
+let me test how different imputation methods handle missing data in this cyclical time series:
+```{r run_benchmark}
+results <- impute_errors(data = sunspot_data)
+print(results)
+```
+
+## Comparing Methods Visually
+```{r plot_results, fig.width=10, fig.height=6}
+plot_errors(results, plotType='line')
+```
+
+**What stands out:**
+
+- **na_mean** is consistently the worst performer - makes sense since it just uses the average (~50 sunspots) and completely ignores the 11-year cycles
+- **na.interp** and **na.approx** perform best across most scenarios.
+- **na.locf** performs reasonably until we hit extreme missing data (90%), where it breaks down completely.
+
+## How Methods Handle 40% Missing Data
+
+Let me see the actual imputation results when 40% of observations are missing:
+```{r impute_visual, fig.width=10, fig.height=10}
+plot_impute(dataIn = sunspot_data, missPercent = 40)
+```
+
+Pink dots = imputed values, Blue dots = actual observations
+
+**My observations:**
+
+- **na.approx, na.interp, and na_interpolation**: These three are hard to distinguish from each other - the pink imputed points flow naturally with the blue actual data. They're capturing the ~11-year solar cycles pretty well.
+
+- **na.mean** This one's obviously broken for this data. see that flat pink line around 100 sunspots? It's completely ignoring 234 years of solar variation and just using the average. useless for any real analysis.
+
+

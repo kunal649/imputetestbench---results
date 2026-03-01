@@ -1,6 +1,2 @@
-install.packages("imputeTestbench")
-library(imputeTestbench)
-
-help(package = "imputeTestbench")
-ls("package:imputeTestbench")
-?impute_errors
+library(rmarkdown)
+render("easytest.Rmd")

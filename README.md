@@ -1,10 +1,13 @@
-# Medium test
-Note : There's no blind copy paste of code in branches. i made each change after some deep thoughful thinking. 
+# imputetest Multivariate support 
+This repository contains solutions for easy, medium & hard test.  
 
-# My Approach 
-I've divided this test into subtests. Each pull request i made has its signifance & minor changes so you dont have to read all 400+ lines of replaced/added code in 1 PR.
+## Test Results
 
-Below are the PR's ~ 
-
-
+### East task : completed
+**Live Report:** [View HTML Report](link)
  
+ ### Medium task - In Progress
+Coming soon...
+
+### Hard task -
+Coming soon...
