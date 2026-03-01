@@ -4,7 +4,7 @@ This repository contains solutions for easy, medium & hard test.
 ## Test Results
 
 ### East task : completed
-**Live Report:** [View HTML Report](link)
+**Live Report:** [View Report](https://kunal649.github.io/imputetestbench---results/)
  
  ### Medium task - In Progress
 Coming soon...
