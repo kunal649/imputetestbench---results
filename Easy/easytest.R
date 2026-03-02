@@ -1,2 +1,3 @@
 library(rmarkdown)
-render("easytest.Rmd")
+render("Tests/ReadMe/Medium/medtest.Rmd")
+
